@@ -186,59 +186,71 @@
      <height>23</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu">
+   <widget class="QMenu" name="Settings_menu">
     <property name="title">
      <string>设置</string>
     </property>
-    <addaction name="language_action"/>
-    <addaction name="defaultFolder_action"/>
+    <addaction name="Language_action"/>
+    <addaction name="DefaultFolder_action"/>
    </widget>
-   <widget class="QMenu" name="menu_2">
+   <widget class="QMenu" name="FeedBack_menu">
     <property name="title">
      <string>反馈</string>
     </property>
-    <addaction name="actionGithub"/>
-    <addaction name="e_mail_action"/>
+    <addaction name="Github_action"/>
+    <addaction name="Email_action"/>
     <addaction name="separator"/>
-    <addaction name="checkUpdate_action"/>
-    <addaction name="aboutProject_action"/>
+    <addaction name="CheckUpdate_action"/>
    </widget>
-   <widget class="QMenu" name="menu_3">
+   <widget class="QMenu" name="Help_menu">
     <property name="title">
      <string>帮助</string>
     </property>
+    <addaction name="Help_action"/>
+    <addaction name="separator"/>
+    <addaction name="action_3"/>
    </widget>
-   <addaction name="menu"/>
-   <addaction name="menu_3"/>
-   <addaction name="menu_2"/>
+   <addaction name="Settings_menu"/>
+   <addaction name="Help_menu"/>
+   <addaction name="FeedBack_menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionGithub">
+  <action name="Github_action">
    <property name="text">
     <string>Github issue</string>
    </property>
   </action>
-  <action name="e_mail_action">
+  <action name="Email_action">
    <property name="text">
     <string>E-mail</string>
    </property>
   </action>
-  <action name="checkUpdate_action">
+  <action name="CheckUpdate_action">
    <property name="text">
     <string>检查更新</string>
    </property>
   </action>
-  <action name="language_action">
+  <action name="Language_action">
    <property name="text">
     <string>语言</string>
    </property>
   </action>
-  <action name="defaultFolder_action">
+  <action name="DefaultFolder_action">
    <property name="text">
     <string>默认存储位置</string>
    </property>
   </action>
   <action name="aboutProject_action">
+   <property name="text">
+    <string>关于项目</string>
+   </property>
+  </action>
+  <action name="Help_action">
+   <property name="text">
+    <string>使用说明</string>
+   </property>
+  </action>
+  <action name="action_3">
    <property name="text">
     <string>关于项目</string>
    </property>
