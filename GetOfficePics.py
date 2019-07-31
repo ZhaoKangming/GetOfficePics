@@ -17,7 +17,7 @@ class Ui_MainWindow(object):
         MainWindow.setMaximumSize(QtCore.QSize(600, 400))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(
-            "../../../.designer/backup/logo.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            "resources/pic/logo.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
