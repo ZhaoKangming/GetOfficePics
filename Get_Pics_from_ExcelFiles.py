@@ -16,7 +16,7 @@ excel.Application.Quit()
 # 判断是否是文件和判断文件是否存在
 def isfile_exist(file_path):
     if not os.path.isfile(file_path):
-        print("It's not a file or no such file exist ! %s" % file_path)
+        print("It's not a file or no such file exist ! %s" %  file_path)
         return False
     else:
         return True
