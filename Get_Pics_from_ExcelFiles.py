@@ -3,20 +3,72 @@ import shutil
 import zipfile
 import win32com.client as win32
 
-#TODO:界面选择，文件还是文件夹
+# TODO:界面选择，文件还是文件夹
+# TODO:对wps文件类型的支出与处理
 
-# 更改 xls 文件为 xlsx文件
-fname = "C:\\Users\\ZhaoKangming\\OneDrive - cnu.edu.cn\\桌面\\img.xls"
-excel = win32.gencache.EnsureDispatch('Excel.Application')
-wb = excel.Workbooks.Open(fname)
-wb.SaveAs(fname + "x", FileFormat=51)  # FileFormat=51 为 .xlsx, FileFormat=56 为 .xls
-wb.Close()
-excel.Application.Quit()
+def file_checker(file_path: str) -> list:
+    '''
+    【功能】检查文档是否为指定类型文档
+    :param file_path: 文件的路径
+    '''
+    temp_path: str = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'temp')
+    if not os.path.exists(temp_path):
+        os.makedirs(temp_path)
+    # 检测文件是否为指定文档类型
+    allowed_suffix_list: list = ['xls', 'xlsx', 'xlsm', 'ppt', 'pptx', 'ppsx', 'ppsm', 'pptm', 'doc', 'docx']
+    file_suffix = os.path.splitext(file_path)[1]
+    if file_suffix == '':
+        result = ['NO', '[WARNING] 无后缀名文件！']
+    elif not file_suffix in allowed_suffix_list:
+        result = ['NO', '[WARNING] 非支持类型的文件！']
+    elif file_suffix in ['xls', 'ppt', 'doc']:
+        shutil.copy(file_path, temp_path)
+        new_file_path: str = file_convertor(file_path)
+        result = ['YES', new_file_path]
+    else:
+        shutil.copy(file_path, temp_path)
+        new_file_path: str = os.path.join(temp_path, os.path.basename(file_path) + 'x')
+        result = ['YES', new_file_path]
+
+
+
+def file_convertor(file_path: str) -> str:
+    '''
+    【功能】将旧格式的office文件转为新版本office文件
+    :param file_path: 文件的路径
+    :param file_suffix: office文件后缀名
+    '''
+    file_suffix = os.path.splitext(file_path)[1]
+    param_dict: dict = {'ppt': ['PowerPoint.Application', 1], 'xls': ['Excel.Application', 51], 'doc': ['Word.Application', 16]}
+    app = win32.gencache.EnsureDispatch(param_dict[file_suffix][0])
+    new_file_path: str = file_path + 'x'
+
+    if file_suffix == 'xls':
+        office_obj = app.Workbooks.Open(file_path)
+    elif file_suffix == 'doc':
+        office_obj = app.Documents.Open(file_path)
+    elif file_suffix == 'ppt':
+        office_obj = app.Presentations.Open(file_path, WithWindow=False)
+
+    if file_suffix == 'ppt':
+        office_obj.SaveAs(new_file_path)
+        office_obj.Close()
+        app.Quit()
+    else:
+        office_obj.SaveAs(new_file_path, FileFormat=param_dict[file_suffix][1])
+        office_obj.Close()
+        app.Application.Quit()
+
+    # 源文件处理与新文件输出
+    os.remove(file_path)
+    return new_file_path
+
+
 
 # 判断是否是文件和判断文件是否存在
 def isfile_exist(file_path):
     if not os.path.isfile(file_path):
-        print("It's not a file or no such file exist ! %s" %  file_path)
+        print("It's not a file or no such file exist ! %s" % file_path)
         return False
     else:
         return True
@@ -56,11 +108,9 @@ def unzip_file(zipfile_path):
 
     file_zip = zipfile.ZipFile(zipfile_path, 'r')
     file_name = os.path.basename(zipfile_path)  # 获取文件名
-    zipdir = os.path.join(os.path.dirname(zipfile_path),
-    str(file_name.split('.')[0]))  # 获取文件所在目录
+    zipdir = os.path.join(os.path.dirname(zipfile_path), str(file_name.split('.')[0]))  # 获取文件所在目录
     for files in file_zip.namelist():
-        file_zip.extract(files, os.path.join(
-            zipfile_path, zipdir))  # 解压到指定文件目录
+        file_zip.extract(files, os.path.join(zipfile_path, zipdir))  # 解压到指定文件目录
 
     file_zip.close()
     return True
@@ -95,12 +145,3 @@ def compenent(excel_file_path, img_path):
         unzip_msg = unzip_file(zip_file_path)
         if unzip_msg:
             read_img(zip_file_path, img_path)
-
-
-# main
-if __name__ == '__main__':
-    #excel地址
-    excel_path = 'C:\\Users\\ZhaoKangming\\OneDrive - cnu.edu.cn\\桌面\\img.xlsx'
-    #图片目录
-    img_dir = 'C:\\Users\\ZhaoKangming\\OneDrive - cnu.edu.cn\\桌面\\imgQQ'
-    compenent(excel_path, img_dir)
