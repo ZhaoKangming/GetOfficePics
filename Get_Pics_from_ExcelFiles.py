@@ -115,6 +115,7 @@ def unzip_file(zipfile_path):
     file_zip.close()
     return True
 
+#xl\media  ppt\media
 
 # 读取解压后的文件夹，打印图片路径
 def read_img(zipfile_path, img_path):
